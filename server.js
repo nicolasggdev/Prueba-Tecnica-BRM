@@ -4,12 +4,16 @@ const dotenv = require("dotenv");
 
 const { database } = require("./database/database");
 
+const { initModels } = require("./database/initModels");
+
 dotenv.config({ path: "./config.env" });
 
 database
   .authenticate()
   .then(() => console.log("Database is authenticated"))
   .catch((err) => console.log(err));
+
+initModels();
 
 database
   .sync()

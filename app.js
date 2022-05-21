@@ -12,6 +12,7 @@ const { AppError } = require("./utils/appError");
 
 // Import Router
 const { userRouter } = require("./routes/user.routes");
+const { ProductRouter } = require("./routes/product.routes");
 
 const app = express();
 
@@ -38,6 +39,7 @@ const limiter = rateLimit({
 app.use(limiter);
 
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/products", ProductRouter);
 
 // Middleware for page that not found
 app.use("*", (req, res, next) => {

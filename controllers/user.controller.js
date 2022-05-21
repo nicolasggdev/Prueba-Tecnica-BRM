@@ -134,6 +134,7 @@ exports.deleteUser = catchAsync(async (req, res, next) => {
     return next(new AppError(404, "Cant find the user with the given ID"));
   }
 
+  // This is a soft delete technical
   await user.update({ status: "deleted" });
 
   res.status(204).json({

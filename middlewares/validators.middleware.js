@@ -29,6 +29,34 @@ exports.createUserValidators = [
     .withMessage("Must provide a valid passwordConfirm")
 ];
 
+// Products Validators
+exports.createProductValidators = [
+  body("batchNumber")
+    .isNumeric()
+    .withMessage("Batch number must be a Number")
+    .notEmpty()
+    .withMessage("Must provide a valid Batch number"),
+  body("name")
+    .isString()
+    .withMessage("Name must be a String")
+    .notEmpty()
+    .withMessage("Must provide a valid name"),
+  body("price")
+    .isNumeric()
+    .withMessage("Price must be a Number")
+    .custom((value) => value > 0)
+    .withMessage("Price must be greater than 0")
+    .notEmpty()
+    .withMessage("Must provide a valid price"),
+  body("quantityAvailable")
+    .isNumeric()
+    .withMessage("Quantity must be a Number")
+    .custom((value) => value > 0)
+    .withMessage("Quantity must be greater than 0")
+    .notEmpty()
+    .withMessage("Must provide a valid quantity")
+];
+
 exports.validationResults = catchAsync(async (req, res, next) => {
   const errors = validationResult(req);
 

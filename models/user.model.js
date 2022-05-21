@@ -4,6 +4,7 @@ const { DataTypes } = require("sequelize");
 
 const User = database.define("user", {
   id: {
+    primaryKey: true,
     type: DataTypes.INTEGER,
     unique: true,
     autoIncrement: true,
@@ -20,6 +21,11 @@ const User = database.define("user", {
     unique: true
   },
   password: {
+    type: DataTypes.STRING(255),
+    allowNull: false,
+    unique: true
+  },
+  passwordConfirm: {
     type: DataTypes.STRING(255),
     allowNull: false,
     unique: true

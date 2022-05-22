@@ -41,4 +41,4 @@ router.delete("/delete-product/:id", deleteUser);
 
 router.route("/:id").get(productById);
 
-module.exports = { ProductRouter: router };
+module.exports = { productRouter: router };

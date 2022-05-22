@@ -45,26 +45,34 @@ exports.createNewUser = catchAsync(async (req, res, next) => {
 
 // Login user
 exports.loginUser = catchAsync(async (req, res, next) => {
-  const { email, password } = req.body;
+  try {
+    const { email, password } = req.body;
 
-  const user = await User.findOne({ where: { email, status: "active" } });
+    if (!email || !password) {
+      return next(new AppError(400, "Enter a valid email and password"));
+    }
 
-  const isPasswordValid = await bcrypt.compare(password, user.password);
+    const user = await User.findOne({ where: { email, status: "active" } });
 
-  if (!user || !isPasswordValid) {
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    if (!user || !isPasswordValid) {
+      return next(new AppError(400, "Credentials are invalid"));
+    }
+
+    const token = await jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+      expiresIn: process.env.JWT_EXPIRES_IN
+    });
+
+    res.status(200).json({
+      status: "success",
+      data: {
+        token
+      }
+    });
+  } catch (err) {
     return next(new AppError(400, "Credentials are invalid"));
   }
-
-  const token = await jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRES_IN
-  });
-
-  res.status(200).json({
-    status: "success",
-    data: {
-      token
-    }
-  });
 });
 
 // Get all the users
@@ -101,16 +109,7 @@ exports.getUserById = catchAsync(async (req, res, next) => {
 
 // Update user by Id
 exports.updateUser = catchAsync(async (req, res, next) => {
-  const { id } = req.params;
-
-  const user = await User.findOne({
-    where: { status: "active", id },
-    attributes: { exclude: ["password", "passwordConfirm"] }
-  });
-
-  if (!user) {
-    return next(new AppError(404, "Cant find the user with the given ID"));
-  }
+  const user = req.currentUser;
 
   const data = filterObj(req.body, "username", "email", "role");
 
@@ -123,16 +122,7 @@ exports.updateUser = catchAsync(async (req, res, next) => {
 
 // Delete user by Id
 exports.deleteUser = catchAsync(async (req, res, next) => {
-  const { id } = req.params;
-
-  const user = await User.findOne({
-    where: { status: "active", id },
-    attributes: { exclude: ["password", "passwordConfirm"] }
-  });
-
-  if (!user) {
-    return next(new AppError(404, "Cant find the user with the given ID"));
-  }
+  const user = req.currentUser;
 
   // This is a soft delete technical
   await user.update({ status: "deleted" });

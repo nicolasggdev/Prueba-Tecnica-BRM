@@ -47,6 +47,10 @@ exports.getOrderById = catchAsync(async (req, res, next) => {
     ]
   });
 
+  if (!order) {
+    return next(new AppError(404, "No order found with that Id"));
+  }
+
   res.status(200).json({
     status: "success",
     data: {
@@ -83,6 +87,8 @@ exports.getAllOwnOrders = catchAsync(async (req, res, next) => {
 exports.getOwnOrderById = catchAsync(async (req, res, next) => {
   const { id } = req.params;
 
+  const { currentUser } = req;
+
   const order = await Order.findOne({
     where: { id },
     include: [
@@ -97,6 +103,10 @@ exports.getOwnOrderById = catchAsync(async (req, res, next) => {
 
   if (!order) {
     return next(new AppError(404, "No order found with that id"));
+  }
+
+  if (currentUser.id !== order.userId) {
+    return next(new AppError(403, "You can't see other users' purchases"));
   }
 
   res.status(200).json({

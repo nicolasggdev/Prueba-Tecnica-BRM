@@ -34,8 +34,10 @@ exports.createProductValidators = [
   body("batchNumber")
     .isNumeric()
     .withMessage("Batch number must be a Number")
+    .custom((value) => value > 0)
+    .withMessage("Price must be greater than 0")
     .notEmpty()
-    .withMessage("Must provide a valid Batch number"),
+    .withMessage("Must provide a valid batch number"),
   body("name")
     .isString()
     .withMessage("Name must be a String")

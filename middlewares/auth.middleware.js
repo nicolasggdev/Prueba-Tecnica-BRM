@@ -52,6 +52,15 @@ exports.protectAccountOwner = catchAsync(async (req, res, next) => {
 
   const { currentUser } = req;
 
+  const user = await User.findOne({
+    where: { status: "active", id },
+    attributes: { exclude: ["password", "passwordConfirm"] }
+  });
+
+  if (!user) {
+    return next(new AppError(404, "Cant find the user with the given ID"));
+  }
+
   if (currentUser.id !== +id) {
     return next(new AppError(403, "You cant update others users accounts"));
   }

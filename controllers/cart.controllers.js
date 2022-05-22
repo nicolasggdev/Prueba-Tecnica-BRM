@@ -3,6 +3,7 @@ const { Cart } = require("../models/cart.model");
 const { Product } = require("../models/product.model");
 const { ProductInCart } = require("../models/productsInCart.model");
 const { Order } = require("../models/order.model");
+const { User } = require("../models/user.model");
 
 // Import Utils
 const { AppError } = require("../utils/appError");
@@ -43,9 +44,16 @@ exports.addProductToCart = catchAsync(async (req, res, next) => {
     where: { status: "active", id: productId }
   });
 
+  if (!product) {
+    return next(new AppError(404, "Cant find the product with the given ID"));
+  }
+
   if (quantity > product.quantityAvailable) {
     return next(
-      new AppError(400, `This product only has ${product.quantity} items.`)
+      new AppError(
+        400,
+        `This product only has ${product.quantityAvailable} items.`
+      )
     );
   }
 
@@ -109,9 +117,16 @@ exports.updateCartProduct = catchAsync(async (req, res, next) => {
     where: { status: "active", id: productId }
   });
 
-  if (quantity > product.quantity) {
+  if (!product) {
+    return next(new AppError(404, "Cant find the product with the given ID"));
+  }
+
+  if (quantity > product.quantityAvailable) {
     return next(
-      new AppError(400, `This product only has ${product.quantity} items`)
+      new AppError(
+        400,
+        `This product only has ${product.quantityAvailable} items`
+      )
     );
   }
 
@@ -189,6 +204,7 @@ exports.purchaseCart = catchAsync(async (req, res, next) => {
   const cart = await Cart.findOne({
     where: { status: "active", userId: currentUser.id },
     include: [
+      { model: User, attributes: { exclude: ["password", "passwordConfirm"] } },
       {
         model: Product,
         through: { where: { status: "active" } }
@@ -218,7 +234,7 @@ exports.purchaseCart = catchAsync(async (req, res, next) => {
 
   await cart.update({ status: "purchased" });
 
-  const newOrder = await Order.create({
+  await Order.create({
     userId: currentUser.id,
     cartId: cart.id,
     issuedAt: new Date().toString(),
@@ -228,7 +244,7 @@ exports.purchaseCart = catchAsync(async (req, res, next) => {
   res.status(201).json({
     status: "success",
     data: {
-      newOrder
+      cart
     }
   });
 });

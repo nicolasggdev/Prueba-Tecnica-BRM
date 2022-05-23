@@ -48,6 +48,14 @@ const { filterObj } = require("../utils/filterObj");
  *   "updatedAt": "2022-05-23T02:44:23.359Z",
  *   "createdAt": "2022-05-23T02:44:23.359Z"
  * }
+ *
+ * @apiError Product Protect Admin
+ *
+ * @apiErrorExample Error-Response:
+ * HTTP/1.1 403 Not Found
+ * {
+ *   error: "Access denied"
+ * }
  */
 exports.createProduct = catchAsync(async (req, res, next) => {
   const { batchNumber, name, price, quantityAvailable } = req.body;
@@ -112,6 +120,14 @@ exports.createProduct = catchAsync(async (req, res, next) => {
  *     "updatedAt": "2022-05-23T02:44:23.359Z"
  *   }
  * ]
+ *
+ * @apiError Product Protect Admin
+ *
+ * @apiErrorExample Error-Response:
+ * HTTP/1.1 403 Not Found
+ * {
+ *   error: "Access denied"
+ * }
  */
 exports.getAllProducts = catchAsync(async (req, res, next) => {
   const products = await Product.findAll({ where: { status: "active" } });
@@ -155,12 +171,21 @@ exports.getAllProducts = catchAsync(async (req, res, next) => {
  *   "createdAt": "2022-05-23T02:44:23.359Z",
  *   "updatedAt": "2022-05-23T02:44:23.359Z"
  * }
+ *
  * @apiError Product No product found
  *
  * @apiErrorExample Error-Response:
  * HTTP/1.1 404 Not Found
  * {
  *   error: "No product found"
+ * }
+ *
+ * @apiError Product Protect Admin
+ *
+ * @apiErrorExample Error-Response:
+ * HTTP/1.1 403 Not Found
+ * {
+ *   error: "Access denied"
  * }
  */
 exports.productById = catchAsync(async (req, res, next) => {
@@ -215,6 +240,14 @@ exports.productById = catchAsync(async (req, res, next) => {
  * HTTP/1.1 404 Not Found
  * {
  *   error: "No product found"
+ * }
+ *
+ * @apiError Product Protect Admin
+ *
+ * @apiErrorExample Error-Response:
+ * HTTP/1.1 403 Not Found
+ * {
+ *   error: "Access denied"
  * }
  */
 exports.updateProduct = catchAsync(async (req, res, next) => {
@@ -271,6 +304,14 @@ exports.updateProduct = catchAsync(async (req, res, next) => {
  * HTTP/1.1 404 Not Found
  * {
  *   error: "No product found"
+ * }
+ *
+ * @apiError Product Protect Admin
+ *
+ * @apiErrorExample Error-Response:
+ * HTTP/1.1 403 Not Found
+ * {
+ *   error: "Access denied"
  * }
  */
 exports.deleteUser = catchAsync(async (req, res, next) => {

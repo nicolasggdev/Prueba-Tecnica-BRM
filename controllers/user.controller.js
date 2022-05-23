@@ -17,13 +17,10 @@ const { filterObj } = require("../utils/filterObj");
  * @apiGroup User
  * @apiPermission none
  *
- * @apiBody {String} role The default user role is client.
- * @apiBody {String} status The default user status is active.
- * @apiBody {String} id The user id.
  * @apiBody {String} username The username.
  * @apiBody {String} email The user email.
- * @apiBody {String} updatedAt The update date of the User.
- * @apiBody {String} createdAt The user's creation date.
+ * @apiBody {String} password The user password.
+ * @apiBody {String} passwordConfirm The user passwordConfirm.
  *
  * @apiSuccess {String} role The default user role is client.
  * @apiSuccess {String} status The default user status is active.

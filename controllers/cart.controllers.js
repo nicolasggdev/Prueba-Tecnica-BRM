@@ -388,7 +388,7 @@ exports.removeProductFromCart = catchAsync(async (req, res, next) => {
 
 // Update status cart
 /**
- * @api {post} https://prueba-tecnica-brm.herokuapp.com/api/v1/cart/purchase 4. Purchase
+ * @api {post} https://prueba-tecnica-brm.herokuapp.com/api/v1/cart/purchase 5. Purchase
  * @apiName Purchase
  * @apiGroup Cart
  * @apiPermission none

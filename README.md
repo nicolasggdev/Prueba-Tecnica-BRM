@@ -24,15 +24,17 @@ El cliente podrá agregar, modificar y eliminar productos con sus diferentes can
 
 Documentación con Postman:
 
-PENDIENTE
+https://documenter.getpostman.com/view/18428706/UyxojQWQ
 
 Documentación con Apidoc:
 
-PENDIENTE
+Es necesario inicializar el proyecto localmente con el comando npm run start:dev y vizualizarlo a traves de live server (Importante usarlo en el html del proyecto)
+
+Si se realiza alguna modificación en la documentación, ejecuta el script: "npm run docs" y se realizará su respectiva actualización
 
 ## Deploy
 
-PENDIENTE
+https://prueba-tecnica-brm.herokuapp.com/
 
 ## Inicia el proyecto
 
@@ -45,6 +47,7 @@ Si desea ver el proyecto localmente, debe instalar las dependencias para ver cor
 En el directorio del proyecto, debe usar npm i y esperar la instalación:
 
 <ul>
+  <li>apidoc</li>
   <li>bcryptjs</li>
   <li>compression</li>
   <li>cors</li>

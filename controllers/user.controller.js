@@ -12,7 +12,7 @@ const { filterObj } = require("../utils/filterObj");
 
 // Create a new user
 /**
- * @api {post} https://prueba-tecnica-brm.herokuapp.com/api/v1/users/signup Create New User
+ * @api {post} https://prueba-tecnica-brm.herokuapp.com/api/v1/users/signup 1. Create New User
  * @apiName createNewUser
  * @apiGroup User
  * @apiPermission none
@@ -87,7 +87,7 @@ exports.createNewUser = catchAsync(async (req, res, next) => {
 
 // Login user
 /**
- * @api {post} https://prueba-tecnica-brm.herokuapp.com/api/v1/users/login Login User
+ * @api {post} https://prueba-tecnica-brm.herokuapp.com/api/v1/users/login 2. Login User
  * @apiName LoginUser
  * @apiGroup User
  * @apiPermission none
@@ -152,7 +152,7 @@ exports.loginUser = catchAsync(async (req, res, next) => {
 
 // Get all the users
 /**
- * @api {get} https://prueba-tecnica-brm.herokuapp.com/api/v1/users Get all User
+ * @api {get} https://prueba-tecnica-brm.herokuapp.com/api/v1/users 3. Get all User
  * @apiName GetAllUsers
  * @apiGroup User
  * @apiPermission none
@@ -203,7 +203,7 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
 
 // Get user by Id
 /**
- * @api {get} https://prueba-tecnica-brm.herokuapp.com/api/v1/users/:id Get user by id
+ * @api {get} https://prueba-tecnica-brm.herokuapp.com/api/v1/users/:id 4. Get user by id
  * @apiName GetUserById
  * @apiGroup User
  * @apiPermission none
@@ -258,7 +258,7 @@ exports.getUserById = catchAsync(async (req, res, next) => {
 
 // Update user by Id
 /**
- * @api {patch} https://prueba-tecnica-brm.herokuapp.com/api/v1/users/:id Update user by id
+ * @api {patch} https://prueba-tecnica-brm.herokuapp.com/api/v1/users/:id 5. Update user by id
  * @apiName UpdateUserById
  * @apiGroup User
  * @apiPermission UserOwner
@@ -281,7 +281,7 @@ exports.getUserById = catchAsync(async (req, res, next) => {
  * @apiSuccessExample {json} Success-Response:
  * HTTP/1.1 204 OK
  * {
- *   "status": "success",
+ *   "status": "success"
  * }
  *
  * @apiError User Can't find the user with the given ID
@@ -314,7 +314,7 @@ exports.updateUser = catchAsync(async (req, res, next) => {
 
 // Delete user by Id
 /**
- * @api {delete} https://prueba-tecnica-brm.herokuapp.com/api/v1/users/:id Delete user by id
+ * @api {delete} https://prueba-tecnica-brm.herokuapp.com/api/v1/users/:id 6. Delete user by id
  * @apiName DeleteUserById
  * @apiGroup User
  * @apiPermission UserOwner
@@ -333,7 +333,7 @@ exports.updateUser = catchAsync(async (req, res, next) => {
  * @apiSuccessExample {json} Success-Response:
  * HTTP/1.1 204 OK
  * {
- *   "status": "success",
+ *   "status": "success"
  * }
  *
  * @apiError User Can't find the user with the given ID

@@ -10,6 +10,40 @@ const { AppError } = require("../utils/appError");
 const { catchAsync } = require("../utils/catchAsync");
 
 // Get all users cart
+/**
+ * @api {get} https://prueba-tecnica-brm.herokuapp.com/api/v1/cart 1. Get user cart
+ * @apiName GetUserCart
+ * @apiGroup Cart
+ * @apiPermission none
+ *
+ * @apiHeader {String} token Users unique access-key.
+ *
+ * @apiHeaderExample {json} Header-Example:
+ * {
+ *   "Authorization": "Bearer {{TOKEN_USER}}"
+ * }
+ *
+ * @apiSuccess {Object} users Get all the users.
+ *
+ * @apiSuccessExample {json} Success-Response:
+ * HTTP/1.1 200 OK
+ * {
+ *   "id": 2,
+ *   "userId": 2,
+ *   "status": "active",
+ *   "createdAt": "2022-05-23T03:39:19.649Z",
+ *   "updatedAt": "2022-05-23T03:39:19.649Z",
+ *   "products": [product with details]
+ * }
+ *
+ * @apiError Cart Can't find the user with the given ID
+ *
+ * @apiErrorExample Error-Response:
+ * HTTP/1.1 404 Not Found
+ * {
+ *   error: "This user does not have a cart yet"
+ * }
+ */
 exports.getUserCart = catchAsync(async (req, res, next) => {
   const { currentUser } = req;
 
@@ -36,6 +70,66 @@ exports.getUserCart = catchAsync(async (req, res, next) => {
 });
 
 // Add products to cart
+/**
+ * @api {post} https://prueba-tecnica-brm.herokuapp.com/api/v1/cart/add-product 2. Add product to cart
+ * @apiName AddProductToCart
+ * @apiGroup Cart
+ * @apiPermission none
+ *
+ * @apiHeader {String} token Users unique access-key.
+ *
+ * @apiHeaderExample {json} Header-Example:
+ * {
+ *   "Authorization": "Bearer {{TOKEN_USER}}"
+ * }
+ *
+ * @apiBody {Number} productId The unique id of each product
+ * @apiBody {Number} quantity The quantity to buy
+ *
+ * @apiSuccess {String} status The default user status is active.
+ * @apiSuccess {Number} id The cart id.
+ * @apiSuccess {Number} productId The product id.
+ * @apiSuccess {Number} cartId The cart id.
+ * @apiSuccess {Number} quantity The quantity to buy
+ * @apiSuccess {String} updatedAt The update date of the cart.
+ * @apiSuccess {String} createdAt The cart's creation date.
+ *
+ * @apiSuccessExample {json} Success-Response:
+ * HTTP/1.1 200 OK
+ * {
+ *   "status": "active",
+ *   "id": 2,
+ *   "productId": 1,
+ *   "cartId": 2,
+ *   "quantity": 1,
+ *   "updatedAt": "2022-05-23T03:39:19.653Z",
+ *   "createdAt": "2022-05-23T03:39:19.653Z"
+ * }
+ *
+ * @apiError ProductDoesntExist Cant find the product with the given ID
+ *
+ * @apiErrorExample Error-Response:
+ * HTTP/1.1 404 Not Found
+ * {
+ *   error: "Cant find the product with the given ID"
+ * }
+ *
+ * @apiError QuantityNotAvailable This product only has ${product.quantityAvailable} items.
+ *
+ * @apiErrorExample Error-Response:
+ * HTTP/1.1 400 Not Found
+ * {
+ *   error: "This product only has ${product.quantityAvailable} items."
+ * }
+ *
+ * @apiError ProductExistInCart This product is already in the cart
+ *
+ * @apiErrorExample Error-Response:
+ * HTTP/1.1 400 Not Found
+ * {
+ *   error: "This product is already in the cart"
+ * }
+ */
 exports.addProductToCart = catchAsync(async (req, res, next) => {
   const { currentUser } = req;
   const { productId, quantity } = req.body;
@@ -108,6 +202,62 @@ exports.addProductToCart = catchAsync(async (req, res, next) => {
 });
 
 // Update cart
+/**
+ * @api {patch} https://prueba-tecnica-brm.herokuapp.com/api/v1/cart/update-product 3. Update products in Cart
+ * @apiName UpdateCart
+ * @apiGroup Cart
+ * @apiPermission none
+ *
+ * @apiHeader {String} token Users unique access-key.
+ *
+ * @apiHeaderExample {json} Header-Example:
+ * {
+ *   "Authorization": "Bearer {{TOKEN_USER}}"
+ * }
+ *
+ * @apiBody {Number} productId The unique id of each product
+ * @apiBody {Number} quantity The quantity to buy
+ *
+ * @apiSuccess {String} status Success.
+ *
+ * @apiSuccessExample {json} Success-Response:
+ * HTTP/1.1 204 OK
+ * {
+ *   "status": "success"
+ * }
+ *
+ * @apiError ProductDoesntExist Cant find the product with the given ID
+ *
+ * @apiErrorExample Error-Response:
+ * HTTP/1.1 404 Not Found
+ * {
+ *   error: "Cant find the product with the given ID"
+ * }
+ *
+ * @apiError QuantityNotAvailable This product only has ${product.quantityAvailable} items.
+ *
+ * @apiErrorExample Error-Response:
+ * HTTP/1.1 400 Not Found
+ * {
+ *   error: "This product only has ${product.quantityAvailable} items."
+ * }
+ *
+ * @apiError Cart This user does not have a cart yet
+ *
+ * @apiErrorExample Error-Response:
+ * HTTP/1.1 400 Not Found
+ * {
+ *   error: "This user does not have a cart yet"
+ * }
+ *
+ * @apiError ProductIsNotInCart Can't update product, is not in the cart yet
+ *
+ * @apiErrorExample Error-Response:
+ * HTTP/1.1 404 Not Found
+ * {
+ *   error: "Can't update product, is not in the cart yet"
+ * }
+ */
 exports.updateCartProduct = catchAsync(async (req, res, next) => {
   const { currentUser } = req;
 
@@ -162,6 +312,45 @@ exports.updateCartProduct = catchAsync(async (req, res, next) => {
 });
 
 // Remove products
+/**
+ * @api {delete} https://prueba-tecnica-brm.herokuapp.com/api/v1/cart/:id 4. Delete products in Cart
+ * @apiName DeleteCart
+ * @apiGroup Cart
+ * @apiPermission none
+ *
+ * @apiHeader {String} token Users unique access-key.
+ *
+ * @apiHeaderExample {json} Header-Example:
+ * {
+ *   "Authorization": "Bearer {{TOKEN_USER}}"
+ * }
+ *
+ * @apiParam {Number} id Product id
+ *
+ * @apiSuccess {String} status Success.
+ *
+ * @apiSuccessExample {json} Success-Response:
+ * HTTP/1.1 204 OK
+ * {
+ *   "status": "success"
+ * }
+ *
+ * @apiError ProductIsNotInCart This product does not exist in this cart
+ *
+ * @apiErrorExample Error-Response:
+ * HTTP/1.1 404 Not Found
+ * {
+ *   error: "This product does not exist in this cart"
+ * }
+ *
+ * @apiError Cart This user does not have a cart yet
+ *
+ * @apiErrorExample Error-Response:
+ * HTTP/1.1 400 Not Found
+ * {
+ *   error: "This user does not have a cart yet"
+ * }
+ */
 exports.removeProductFromCart = catchAsync(async (req, res, next) => {
   const { currentUser } = req;
 
@@ -198,6 +387,41 @@ exports.removeProductFromCart = catchAsync(async (req, res, next) => {
 });
 
 // Update status cart
+/**
+ * @api {post} https://prueba-tecnica-brm.herokuapp.com/api/v1/cart/purchase 4. Purchase
+ * @apiName Purchase
+ * @apiGroup Cart
+ * @apiPermission none
+ *
+ * @apiHeader {String} token Users unique access-key.
+ *
+ * @apiHeaderExample {json} Header-Example:
+ * {
+ *   "Authorization": "Bearer {{TOKEN_USER}}"
+ * }
+ *
+ * @apiSuccess {String} status Success.
+ *
+ * @apiSuccessExample {json} Success-Response:
+ * HTTP/1.1 201 OK
+ * {
+ *   "id": 2,
+ *   "userId": 2,
+ *   "status": "purchased",
+ *   "createdAt": "2022-05-23T03:39:19.649Z",
+ *   "updatedAt": "2022-05-23T03:58:59.072Z",
+ *   "user": {user details},
+ *   "products": [products details]
+ * }
+ *
+ * @apiError Cart This user does not have a cart yet
+ *
+ * @apiErrorExample Error-Response:
+ * HTTP/1.1 400 Not Found
+ * {
+ *   error: "This user does not have a cart yet"
+ * }
+ */
 exports.purchaseCart = catchAsync(async (req, res, next) => {
   const { currentUser } = req;
 

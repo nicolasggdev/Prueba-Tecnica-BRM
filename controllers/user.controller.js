@@ -230,6 +230,7 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
  *   "createdAt": "2022-05-22T23:11:04.236Z",
  *   "updatedAt": "2022-05-22T23:11:04.236Z"
  * }
+ *
  * @apiError User Can't find the user with the given ID
  *
  * @apiErrorExample Error-Response:
